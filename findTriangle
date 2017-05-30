@@ -1,0 +1,63 @@
+// 题目和参考 http://blog.csdn.net/sinat_33718563/article/details/71036092
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+struct node {
+    char col;
+    int x,y,z;
+};
+vector<node> V;
+double distance(int i, int j){
+    return sqrt(pow((V[i].x - V[j].x),2) + pow((V[i].y - V[j].y),2) + pow((V[i].z - V[j].z),2));
+}
+bool isTriangle(int i, int j, int k){
+    double a = distance(i, j);
+    double b = distance(i, k);
+    double c = distance(k, j);
+    if(a+b>c && a+c>b && b+c>a)
+        return true;
+    return false;
+}
+bool isCol(int i, int j, int k){
+    if(V[i].col==V[j].col && V[j].col==V[k].col)
+        return true;
+    else if(V[i].col!=V[j].col && V[i].col!=V[k].col && V[j].col!=V[k].col)
+        return true;
+    else
+        return false;
+}
+double countArea(int i, int j, int k){
+    double a = distance(i, j);
+    double b = distance(i, k);
+    double c = distance(k, j);
+    double p = (a+b+c)/2;
+    return sqrt(p*(p-a)*(p-b)*(p-c));
+}
+int main(){
+    int n;
+    while (cin>>n) {
+        node v;
+        double maxArea=0;
+        for(int i=0;i<n;i++){
+            cin>>v.col;
+            cin>>v.x>>v.y>>v.z;
+            V.push_back(v);
+        }
+        for(int i=0;i<n-2;i++){
+            for(int j=i+1;j<n-1;j++){
+                for(int k=j+1;k<n;k++){
+                    if(isTriangle(i,j,k)&&isCol(i,j,k)){
+                        double area = countArea(i,j,k);
+                        if(area > maxArea)
+                            maxArea = area;
+                    }
+                }
+            }
+        }
+        printf("%.5lf\n",maxArea);
+    }
+    return 0;
+}
