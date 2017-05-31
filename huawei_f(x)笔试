@@ -1,0 +1,55 @@
+//  模拟七进制乘法运算
+//  huawei_1.cpp
+//  study
+//
+//  Created by 顾凯文 on 2017/5/31.
+//  Copyright © 2017年 顾凯文. All rights reserved.
+//
+
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+string smul(string &s1,string &s2){
+    reverse(s1.begin(), s1.end());
+    reverse(s2.begin(), s2.end());
+    int size1 = s1.size();
+    int size2 = s2.size();
+    string temp(size2+size1,'0');
+    int c=0;
+    for(int i=0;i<size1;i++){
+        int j;
+        for(j=0;j<size2;j++){
+            c+=temp[i+j]-'0'+(s1[i]-'0')*(s2[j]-'0');  // 为什么要加temp[i+j]呢？ 为什么要加c呢？
+            temp[i+j]=(c%7)+'0';  // 余数放在i+j下标位置
+            c=c/7;  // 进位数
+        }
+        while (c) {  // 别忘了最高位可能要进位哦
+            temp[i+j++]+=c%10;
+            c=c/10;
+        }
+    }
+    for(int i=temp.size()-1;i>=0;i--){  // 反转前，需要注意什么呢？是不是要把多余的‘0’给去掉
+        if(temp[i]!='0')
+            break;
+        else{
+            temp.pop_back();
+        }
+    }
+    reverse(temp.begin(), temp.end());
+    return temp;
+}
+
+int main(){
+    string s1,s2;
+    while (cin>>s1) {
+        cin>>s2;
+        string kout="";
+        if(!s1.empty() && !s2.empty())
+            cout<< kout;
+        string sout = smul(s1,s2);
+        cout<<sout<<endl;
+    }
+    return 0;
+}
