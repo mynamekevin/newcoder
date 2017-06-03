@@ -1,0 +1,37 @@
+// 判断字符是否可以表示成数值
+// 类似题目实现，stoi函数
+
+class Solution {
+public:
+    bool isNumeric(char* string)
+    {
+//        int flag = 1;
+        if(*string=='-'||*string=='+'){
+  //      	flag = -1;   
+            ++string;
+        }
+        if(string==NULL || *string=='\0' ) // 排除只有+-号，空指针，空字符串
+            return false;
+        while(*string>='0' && *string<='9')  // 调过 数值部分
+            ++string;
+        if(*string=='.'){  // 遇到小数点情形，后面的数值调过。注意小数点后面可以有科学计数法，所以只是调过数值部分
+            ++string;
+	        while(*string>='0' && *string<='9')
+    	        ++string;    
+        }
+        if(*string=='e'||*string=='E'){  // 科学计数法
+            ++string;
+            if(*string=='\0')
+                return false;
+            if(*string=='-'||*string=='+')
+                ++string;
+            while(*string>='0' && *string<='9')
+    	        ++string;
+        }
+        if(*string=='\0') // 很关键的一步，跳过了小数点+数值，跳过了e+正负号+数值，如果没有结束就不是数值。
+	        return true;
+        else
+            return false;
+    }
+
+};
