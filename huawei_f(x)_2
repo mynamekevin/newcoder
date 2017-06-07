@@ -1,0 +1,82 @@
+// 华为fx计划笔试第二题
+//case1:
+//3
+//1 MALE 170
+//2 FEMALE 180
+//3 MALE 170
+//2
+// out:3
+//case2:
+//3
+//1 MALE 170
+//2 FEMALE 180
+//3 MALE 160
+//2
+// out:1
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <map>
+using namespace std;
+class People{
+public:
+    int id;
+    string sex;
+    int high;
+
+    People(int id,string sex,int high){
+        this->id = id;
+        this->sex = sex;
+        this->high = high;
+    }
+};
+bool compare(People p1, People p2){
+    
+    if(p1.sex==p2.sex && p1.high==p2.high)
+        return 0;
+    if(p1.sex<p2.sex)
+        return 1;
+    else if(p1.sex>p2.sex)
+        return 0;
+    else if(p1.high<p2.high)
+        return 1;
+    else if(p1.high>p2.high)
+        return 0;
+    else
+        return 0;
+}
+int findlast(vector<int> a, int m){
+    int last = 0;
+    for(int i=2;i<=a.size();i++){
+        last = (last+m)%i;
+    }
+    return a[last];
+}
+int main(){
+    int num;
+    vector<People> arr;
+    while (cin>>num) {
+//        People person;
+        int id;
+        string sex;
+        int high;
+        for(int i=0;i<num;i++){
+            cin>>id>>sex>>high;
+            People people(id,sex,high);
+            arr.push_back(people);
+        }
+        sort(arr.begin(), arr.end(), compare);
+//        for(auto c:arr)
+//            cout<<"id"<<c.id<<endl;
+        vector<int> idarr;
+        for (auto c: arr) {
+            idarr.push_back(c.id);
+        }
+        int m=0;
+        cin>>m;
+        int result = findlast(idarr,m);
+        cout<<result<<endl;
+    }
+    return 0;
+}
