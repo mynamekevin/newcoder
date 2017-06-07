@@ -1,19 +1,13 @@
-//  模拟七进制乘法运算，结果只有80%准确率，不知道为什么？
-//  huawei_1.cpp
-//  study
-//
-//  Created by 顾凯文 on 2017/5/31.
-//  Copyright © 2017年 顾凯文. All rights reserved.
-//
-
 #include <stdio.h>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 string smul(string &s1,string &s2){
     reverse(s1.begin(), s1.end());
     reverse(s2.begin(), s2.end());
+    //    cout<<s1<<endl;
     int size1 = s1.size();
     int size2 = s2.size();
     string temp(size2+size1,'0');
@@ -21,16 +15,16 @@ string smul(string &s1,string &s2){
     for(int i=0;i<size1;i++){
         int j;
         for(j=0;j<size2;j++){
-            c+=temp[i+j]-'0'+(s1[i]-'0')*(s2[j]-'0');  // 为什么要加temp[i+j]呢？ 为什么要加c呢？
-            temp[i+j]=(c%7)+'0';  // 余数放在i+j下标位置
-            c=c/7;  // 进位数
+            c+=temp[i+j]-'0'+(s1[i]-'0')*(s2[j]-'0');
+            temp[i+j]=(c%7)+'0';
+            c=c/7;
         }
-        while (c) {  // 别忘了最高位可能要进位哦
+        while (c) {
             temp[i+j++]+=c%10;
             c=c/10;
         }
     }
-    for(int i=temp.size()-1;i>=0;i--){  // 反转前，需要注意什么呢？是不是要把多余的‘0’给去掉
+    for(int i=temp.size()-1;i>=0;i--){
         if(temp[i]!='0')
             break;
         else{
@@ -48,7 +42,27 @@ int main(){
         string kout="";
         if(!s1.empty() && !s2.empty())
             cout<< kout;
+        int tag=1;
+        if(s1[0]=='-'){
+            s1.erase(0,1);
+            tag*=-1;
+        }
+//        cout<<s1<<endl;
+        if(s2[0]=='-'){
+            s2.erase(0,1);
+            tag*=-1;
+        }
+//        cout<<s2<<endl;
+        if(s1[0]=='+')
+            s1.erase(0,1);
+        if(s2[0]=='+')
+            s2.erase(0,1);
         string sout = smul(s1,s2);
+        if(tag==-1)
+            sout.insert(0,"-");
+        if(s1=="0"||s2=="0")
+            sout="0";
+
         cout<<sout<<endl;
     }
     return 0;
